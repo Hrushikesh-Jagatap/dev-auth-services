@@ -297,7 +297,7 @@ const getUnauthorizeToken = async (dataValues) => {
   const { app_name, app_version_code } = dataValues;
   const payload = {
     userId: 'anonymous',
-    scope: 'Users',
+    scope: [app_name],
   };
   Logger.info({ info: 'payload' });
   return AuthService.issueToken(payload);
