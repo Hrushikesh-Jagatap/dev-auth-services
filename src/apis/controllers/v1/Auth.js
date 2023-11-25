@@ -71,25 +71,16 @@ const getSegment = ({ user, app_name }) => {
   // }
   // ]
   if (app_name === 'teacherApp') {
-    return 'retailer';
-  } else if (app_name === 'householdApp') {
-    if (user.userType === 'EMPLOYEE_SH') {
-      return 'sales_employee_sh';
-    }
-    if (user.userType === 'EMPLOYEE_SSO') {
-      return 'sales_employee_sso';
-    }
-    if (user.userType === 'EMPLOYEE_CO') {
-      return 'sales_employee_co';
-    }
-    return 'household';
-  } else if (app_name === 'studentApp') {
-    return 'logistics_delivery';
+    return 'teacher';
+  } 
+   
+  else if (app_name === 'studentApp') {
+    return 'student';
   } else if (app_name === 'admin') {
     if (user.adminData.status === 'active') {
       return user.adminData.role;
       // } else if (user.adminData.status === 'inactive') {
-      //   return 'non-admin';
+      //   return 'non-admin';d
     }
     return 'non-admin';
   }
@@ -150,7 +141,7 @@ const generateLogisticData = async (user, headers, body) => {
     //isEmployee: userType.includes('EMPLOYEE'),
     scope: ['Users', app_name],
   };
-  Logger.info({ info: 'In retailerApp app' });
+  Logger.info({ info: 'In student app' });
   return payload;
 };
 
@@ -168,15 +159,15 @@ const generateAdminData = async (user, headers, body) => {
     userId,
     phone,
     userType: appUserType,
-    adminData: {
-      status: user._doc.adminData.status,
-      role: user._doc.adminData.role,
-    },
-    segmentId,
-    flyyUserId: `${app_name.slice(0, -3)}-${flyyUserId}`,
-    scope: ['ADMIN'],
+    // adminData: {
+    //   status: user._doc.adminData.status,
+    //   role: user._doc.adminData.role,
+    // },
+    // segmentId,
+    // flyyUserId: `${app_name.slice(0, -3)}-${flyyUserId}`,
+    scope: [app_name, 'Users','studentApp','teacherApp'],
   };
-  Logger.info({ info: 'In deliveryApp app' });
+  Logger.info({ info: 'In admin app' });
   return payload;
 };
 
@@ -249,7 +240,7 @@ const generateRetailerData = async (user, headers, body) => {
     // flyyUserId: `${app_name.slice(0, -3)}-${flyyUserId}`,
     scope: ['Users', app_name],
   };
-  Logger.info({ info: 'In retailerApp app' });
+  Logger.info({ info: 'In teacher app' });
   return payload;
 };
 
